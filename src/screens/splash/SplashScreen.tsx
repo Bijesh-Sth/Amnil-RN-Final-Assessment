@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SplashScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const scaleValue = useRef(new Animated.Value(1)).current;
@@ -9,21 +10,26 @@ const SplashScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       Animated.sequence([
         Animated.timing(scaleValue, {
           toValue: 1.2,
-          duration: 1000, 
+          duration: 1000,
           useNativeDriver: true,
         }),
         Animated.timing(scaleValue, {
-          toValue: 1, 
-          duration: 1000, 
+          toValue: 1,
+          duration: 1000,
           useNativeDriver: true,
         }),
       ])
     );
     pulse.start();
 
-    setTimeout(() => {
-      navigation.replace('Login');
-    }, 5000);
+    const checkToken = async () => {
+      const token = await AsyncStorage.getItem('token');
+      setTimeout(() => {
+        navigation.replace(token ? 'Home' : 'Login');
+      }, 3000);
+    };
+
+    checkToken();
   }, [navigation, scaleValue]);
 
   return (
