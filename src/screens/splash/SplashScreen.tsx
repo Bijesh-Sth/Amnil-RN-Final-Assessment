@@ -22,7 +22,7 @@ const SplashScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     pulse.start();
 
     setTimeout(() => {
-      navigation.replace('Home');
+      navigation.replace('Login');
     }, 5000);
   }, [navigation, scaleValue]);
 
