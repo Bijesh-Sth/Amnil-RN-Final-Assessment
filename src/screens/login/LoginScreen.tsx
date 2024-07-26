@@ -1,36 +1,29 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Alert, StyleSheet, ActivityIndicator } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store';
+import { loginUser } from '../../redux/actions/userActions';
 import { Button, Input } from '../../components'; 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const Login: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
+  const dispatch = useDispatch<AppDispatch>();
+  const { status, error } = useSelector((state: RootState) => state.user);
+
   const handleLogin = async () => {
-    setLoading(true);
-
-    try {
-      const response = await axios.post('https://dummyjson.com/auth/login', {
-        username,
-        password,
-      });
-
-      if (response.status === 200) {
-        await AsyncStorage.setItem('token', response.data.token);
+    if (username && password) {
+      await dispatch(loginUser({ username, password }));
+      if (status === 'succeeded') {
         navigation.replace('Home');
       } else {
-        Alert.alert('Error', 'Invalid credentials');
+        Alert.alert('Error', 'Failed to login');
       }
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Error', 'Failed to login');
-    } finally {
-      setLoading(false);
+    } else {
+      Alert.alert('Error', 'Please fill in all fields');
     }
   };
 
@@ -50,11 +43,13 @@ const Login: React.FC<{ navigation: any }> = ({ navigation }) => {
 
       <Button title="Sign In" onPress={handleLogin} />
 
-      {loading && (
+      {status === 'loading' && (
         <View style={StyleSheet.absoluteFill}>
           <ActivityIndicator size="large" color="#0000ff" style={styles.loader} />
         </View>
       )}
+
+      {error && <Text style={styles.errorText}>{error}</Text>}
 
       <Text style={styles.footerText}>
         Don't have an account?{' '}
@@ -110,6 +105,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 'auto',
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginTop: 10,
   },
 });
 
