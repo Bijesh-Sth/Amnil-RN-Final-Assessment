@@ -9,6 +9,7 @@ interface UserState {
   lastName: string;
   gender: string;
   image: string;
+    phone: string;
   token: string;
   refreshToken: string;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
@@ -23,6 +24,7 @@ const initialState: UserState = {
   lastName: '',
   gender: '',
   image: '',
+  phone: '+81 965-431-3024',
   token: '',
   refreshToken: '',
   status: 'idle',
@@ -40,6 +42,7 @@ const userSlice = createSlice({
       state.firstName = '';
       state.lastName = '';
       state.gender = '';
+      state.phone = '';
       state.image = '';
       state.token = '';
       state.refreshToken = '';
@@ -76,6 +79,7 @@ const userSlice = createSlice({
         state.email = action.payload.email;
         state.firstName = action.payload.firstName;
         state.lastName = action.payload.lastName;
+        state.phone = action.payload.phone;
         state.gender = action.payload.gender;
         state.image = action.payload.image;
       })
