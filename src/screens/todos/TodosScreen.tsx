@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Modal, TouchableOpacity, Text, FlatList, Pressable } from 'react-native';
+import { View, StyleSheet, Modal, TouchableOpacity, Text, FlatList, Pressable, Animated, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {TodoForm, TodoItem} from '../../components';
 import { Todo } from '../../types';
@@ -11,10 +11,20 @@ const TodosScreen: React.FC = () => {
   const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
   const [sortCriteria, setSortCriteria] = useState<string>('alphabetical');
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
+  const [searchText, setSearchText] = useState<string>('');
+  const filterAnim = useState(new Animated.Value(0))[0];
 
   useEffect(() => {
     loadTodos();
   }, []);
+
+  useEffect(() => {
+    Animated.timing(filterAnim, {
+      toValue: isFilterVisible ? 1 : 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [isFilterVisible]);
 
   const loadTodos = async () => {
     try {
@@ -71,7 +81,9 @@ const TodosScreen: React.FC = () => {
     });
   };
 
-  const sortedTodos = sortTodos(todos, sortCriteria);
+  const filteredTodos = sortTodos(todos, sortCriteria).filter(todo => 
+    todo.text.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   const filterOptions = [
     { label: 'Alphabetical', value: 'alphabetical', icon: 'sort-alpha-asc' },
@@ -82,7 +94,7 @@ const TodosScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={sortedTodos}
+        data={filteredTodos}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TodoItem
@@ -91,38 +103,63 @@ const TodosScreen: React.FC = () => {
             onDelete={() => deleteTodo(item.id)}
           />
         )}
+        ListHeaderComponent={
+          <View style={styles.listHeaderContainer}>
+            <Text style={styles.listHeaderText}>Todo List</Text>
+          </View>
+        }
       />
-      <View style={styles.controlContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleAddTodo}>
-          <Icon name="plus" size={20} color="#fff" />
-          <Text style={styles.buttonText}>Add</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.removeAllButton]} onPress={deleteAllTodos}>
-          <Icon name="trash" size={20} color="#fff" />
-          <Text style={styles.buttonText}>Remove All</Text>
-        </TouchableOpacity>
-        <Pressable style={styles.filterButton} onPress={() => setIsFilterVisible(!isFilterVisible)}>
-          <Icon name="filter" size={20} color="#fff" />
-          <Text style={styles.buttonText}>Filter</Text>
-        </Pressable>
-      </View>
-      {isFilterVisible && (
-        <View style={styles.filterDropdown}>
-          {filterOptions.map(option => (
-            <TouchableOpacity
-              key={option.value}
-              style={styles.filterOption}
-              onPress={() => {
-                setSortCriteria(option.value);
-                setIsFilterVisible(false);
-              }}
-            >
-              <Icon name={option.icon} size={20} color="#000" />
-              <Text style={styles.filterOptionText}>{option.label}</Text>
-            </TouchableOpacity>
-          ))}
+      <Animated.View
+        style={[
+          styles.filterDropdown,
+          {
+            transform: [
+              {
+                translateY: filterAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [300, 0], // Adjust the output range to suit your design
+                }),
+              },
+            ],
+          },
+        ]}
+      >
+        {filterOptions.map(option => (
+          <TouchableOpacity
+            key={option.value}
+            style={styles.filterOption}
+            onPress={() => {
+              setSortCriteria(option.value);
+              setIsFilterVisible(false);
+            }}
+          >
+            <Icon name={option.icon} size={20} color="#000" />
+            <Text style={styles.filterOptionText}>{option.label}</Text>
+          </TouchableOpacity>
+        ))}
+      </Animated.View>
+      <View style={styles.bottomContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search todos..."
+          value={searchText}
+          onChangeText={setSearchText}
+        />
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={handleAddTodo}>
+            <Icon name="plus" size={20} color="#fff" />
+            <Text style={styles.buttonText}>Add</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.button, styles.removeAllButton]} onPress={deleteAllTodos}>
+            <Icon name="trash" size={20} color="#fff" />
+            <Text style={styles.buttonText}>Remove All</Text>
+          </TouchableOpacity>
+          <Pressable style={styles.filterButton} onPress={() => setIsFilterVisible(!isFilterVisible)}>
+            <Icon name="filter" size={20} color="#fff" />
+            <Text style={styles.buttonText}>Filter</Text>
+          </Pressable>
         </View>
-      )}
+      </View>
       <Modal
         visible={isFormVisible}
         transparent={true}
@@ -150,13 +187,36 @@ const TodosScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: '#f9f9f9',
   },
-  controlContainer: {
+  listHeaderContainer: {
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  listHeaderText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  bottomContainer: {
+    padding: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#ddd',
+    backgroundColor: '#fff',
+  },
+  searchInput: {
+    height: 50,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+    backgroundColor: '#fff',
+  },
+  buttonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 20,
+    justifyContent: 'space-between',
   },
   button: {
     flexDirection: 'row',
@@ -164,9 +224,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#007bff',
     padding: 10,
     borderRadius: 5,
-    marginRight: 10,
     flex: 1,
     justifyContent: 'center',
+    marginHorizontal: 5,
   },
   removeAllButton: {
     backgroundColor: '#FF0000',
@@ -183,10 +243,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     flex: 1,
     justifyContent: 'center',
+    marginHorizontal: 5,
   },
   filterDropdown: {
     position: 'absolute',
-    bottom: 70,
+    bottom: 120,
     left: 20,
     right: 20,
     backgroundColor: '#fff',
