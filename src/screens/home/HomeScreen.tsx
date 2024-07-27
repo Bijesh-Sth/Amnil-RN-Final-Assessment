@@ -1,31 +1,46 @@
-import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect } from 'react';
+import { FlatList, Text, View, StyleSheet } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from '../../redux/actions/productActions';
+import { RootState } from '../../redux/store';
+import { BannerComponent, CategoryListComponent, SkeletonLoader } from '../../components';
 
-const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const handleLogout = async () => {
-    await AsyncStorage.removeItem('token');
-    navigation.replace('Login');
-  };
+const HomeScreen: React.FC = () => {
+  const dispatch = useDispatch();
+  const { products, status } = useSelector((state: RootState) => state.products);
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  const categories = Array.from(new Set(products.map((product: any) => product.category)));
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>HomeScreen</Text>
-      <Button title="Logout" onPress={handleLogout} />
-    </View>
+    <FlatList
+      ListHeaderComponent={<BannerComponent />}
+      data={status === 'loading' ? new Array(5).fill(null) : categories}
+      renderItem={({ item }) => 
+        status === 'loading' ? (
+          <View style={styles.skeletonContainer}>
+            {new Array(5).fill(null).map((_, index) => (
+              <SkeletonLoader key={index} />
+            ))}
+          </View>
+        ) : (
+          <CategoryListComponent category={item} products={products.filter((product: any) => product.category === item)} />
+        )
+      }
+      keyExtractor={(item, index) => index.toString()}
+    />
   );
 };
 
-export default HomeScreen;
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 24,
-    marginBottom: 20,
+  skeletonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
   },
 });
+
+export default HomeScreen;

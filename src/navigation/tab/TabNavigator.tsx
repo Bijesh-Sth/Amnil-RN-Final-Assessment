@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AccountScreen, CartScreen, HomeScreen, SearchScreen } from '../../screens';
+import { AccountScreen, CartScreen, SearchScreen } from '../../screens';
+import {ProdStackNavigator} from '..';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 
@@ -38,7 +39,7 @@ const TabNavigator: React.FC = () => {
                 tabBarInactiveTintColor: 'gray',
             })}
         >
-            <Tab.Screen name="Home" component={HomeScreen} />
+            <Tab.Screen name="Home" component={ProdStackNavigator} />
             <Tab.Screen name="Search" component={SearchScreen} />
             <Tab.Screen name="Cart" component={CartScreen} />
             <Tab.Screen name="Account" component={AccountScreen} />
