@@ -8,7 +8,7 @@ import { fetchUser, logoutUser } from '../../redux/actions/userActions';
 
 const ProfileComponent: React.FC = (props) => {
   const dispatch = useDispatch();
-  const user  = useSelector((state: RootState) => state.user);
+  const user = useSelector((state: RootState) => state.user);
   const { status } = useSelector((state: RootState) => state.user);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
@@ -27,15 +27,19 @@ const ProfileComponent: React.FC = (props) => {
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('refreshToken'); // Also remove the refresh token
     dispatch(logoutUser() as any);
     setIsAuthenticated(false);
     Alert.alert('Logged out successfully!');
-    props.navigation.replace('Login'); 
+    props.navigation.replace('Login');
   };
 
   return (
     <DrawerContentScrollView {...props}>
-      <View style={styles.profileContainer}>
+      <TouchableOpacity 
+        style={styles.profileContainer} 
+        onPress={() => props.navigation.navigate('Tab', { screen: 'Account' })}
+      >
         {status === 'loading' ? (
           <ActivityIndicator size="large" color="#FFA500" />
         ) : (
@@ -51,9 +55,9 @@ const ProfileComponent: React.FC = (props) => {
                 <Text style={styles.logoutButtonText}>Logout</Text>
               </TouchableOpacity>
             </>
-          ) : null 
+          ) : null
         )}
-      </View>
+      </TouchableOpacity>
       <DrawerItemList {...props} />
     </DrawerContentScrollView>
   );

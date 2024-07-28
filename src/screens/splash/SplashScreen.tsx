@@ -1,8 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
+import { refreshToken } from '../../redux/actions/userActions';
 
 const SplashScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+  const dispatch = useDispatch<AppDispatch>();
   const scaleValue = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
@@ -24,13 +28,23 @@ const SplashScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
     const checkToken = async () => {
       const token = await AsyncStorage.getItem('token');
-      setTimeout(() => {
-        navigation.replace(token ? 'Home' : 'Login');
-      }, 3000);
+      const refreshTokenValue = await AsyncStorage.getItem('refreshToken');
+      if (token && refreshTokenValue) {
+        try {
+          await dispatch(refreshToken()).unwrap();
+          navigation.replace('Home');
+        } catch (error) {
+          navigation.replace('Login');
+        }
+      } else {
+        setTimeout(() => {
+          navigation.replace(token ? 'Home' : 'Login');
+        }, 3000);
+      }
     };
 
     checkToken();
-  }, [navigation, scaleValue]);
+  }, [dispatch, navigation, scaleValue]);
 
   return (
     <View style={styles.container}>

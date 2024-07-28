@@ -117,7 +117,7 @@ const TodosScreen: React.FC = () => {
               {
                 translateY: filterAnim.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [300, 0], // Adjust the output range to suit your design
+                  outputRange: [300, 0], 
                 }),
               },
             ],

@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Alert, StyleSheet, ActivityIndicator } fr
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import { loginUser } from '../../redux/actions/userActions';
-import { Button, Input } from '../../components'; 
+import { Button, Input } from '../../components';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const Login: React.FC<{ navigation: any }> = ({ navigation }) => {
@@ -35,7 +35,13 @@ const Login: React.FC<{ navigation: any }> = ({ navigation }) => {
       <Input placeholder="Username" value={username} onChangeText={setUsername} />
 
       <View style={styles.passwordInputContainer}>
-        <Input placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry={!showPassword} style={{ flex: 1 }} />
+        <Input
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={!showPassword}
+          style={{ flex: 1 }}
+        />
         <TouchableOpacity style={styles.toggleButton} onPress={() => setShowPassword(!showPassword)}>
           <Icon name={showPassword ? 'eye-off-outline' : 'eye-outline'} size={24} color="#3498db" />
         </TouchableOpacity>

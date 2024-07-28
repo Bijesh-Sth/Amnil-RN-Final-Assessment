@@ -11,7 +11,7 @@ const DrawerNavigator:React.FC = () => {
         <Drawer.Navigator
         drawerContent={(props) => <ProfileComponent {...props} />}
         >
-           <Drawer.Screen name="Tab" component={TabNavigator} />
+           <Drawer.Screen name="APP" component={TabNavigator} />
            <Drawer.Screen name="Todos" component={TodosScreen} />
            <Drawer.Screen name="Posts" component={PostsScreen} />
         </Drawer.Navigator>

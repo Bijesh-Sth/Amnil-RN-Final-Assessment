@@ -10,6 +10,7 @@ export const loginUser = createAsyncThunk(
       const response = await api.post('auth/login', { username, password });
       const { token, refreshToken, ...userData } = response.data;
       await AsyncStorage.setItem('token', token);
+      await AsyncStorage.setItem('refreshToken', refreshToken);
       return { ...userData, token, refreshToken };
     } catch (error: any) {
       return rejectWithValue(error.response.data);
@@ -31,7 +32,23 @@ export const fetchUser = createAsyncThunk(
       });
       console.log(response.data);
       return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
+export const refreshToken = createAsyncThunk(
+  'user/refreshToken',
+  async (_, { rejectWithValue }) => {
+    try {
+      const refreshToken = await AsyncStorage.getItem('refreshToken');
+      if (!refreshToken) throw new Error('No refresh token found');
+      const response = await api.post('auth/refresh', { refreshToken });
+      const { token, refreshToken: newRefreshToken } = response.data;
+      await AsyncStorage.setItem('token', token);
+      await AsyncStorage.setItem('refreshToken', newRefreshToken);
+      return { token, refreshToken: newRefreshToken };
     } catch (error: any) {
       return rejectWithValue(error.response.data);
     }
@@ -42,6 +59,7 @@ export const logoutUser = createAsyncThunk(
   'user/logoutUser',
   async (_, { dispatch }) => {
     await AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('refreshToken');
     dispatch(clearUser());
   }
 );

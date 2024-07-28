@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { loginUser, logoutUser, fetchUser } from '../actions/userActions';
+import { loginUser, logoutUser, fetchUser, refreshToken } from '../actions/userActions';
 
 interface UserState {
   id: number | null;
@@ -9,7 +9,7 @@ interface UserState {
   lastName: string;
   gender: string;
   image: string;
-    phone: string;
+  phone: string;
   token: string;
   refreshToken: string;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
@@ -24,7 +24,7 @@ const initialState: UserState = {
   lastName: '',
   gender: '',
   image: '',
-  phone: '+81 965-431-3024',
+  phone: '',
   token: '',
   refreshToken: '',
   status: 'idle',
@@ -86,6 +86,10 @@ const userSlice = createSlice({
       .addCase(fetchUser.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload as string;
+      })
+      .addCase(refreshToken.fulfilled, (state, action) => {
+        state.token = action.payload.token;
+        state.refreshToken = action.payload.refreshToken;
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.id = null;
