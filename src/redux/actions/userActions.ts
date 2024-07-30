@@ -55,11 +55,22 @@ export const refreshToken = createAsyncThunk(
   }
 );
 
+
 export const logoutUser = createAsyncThunk(
   'user/logoutUser',
-  async (_, { dispatch }) => {
-    await AsyncStorage.removeItem('token');
-    await AsyncStorage.removeItem('refreshToken');
-    dispatch(clearUser());
+  async (_, { dispatch, getState, rejectWithValue }) => {
+    try {
+      await AsyncStorage.removeItem('token');
+      await AsyncStorage.removeItem('refreshToken');
+      dispatch(clearUser());
+      dispatch(setMessage('You have been logged out successfully.'));
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
   }
 );
+
+export const setMessage = (message: string) => ({
+  type: 'SET_MESSAGE',
+  payload: message,
+});

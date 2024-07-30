@@ -14,5 +14,12 @@ export type ProdStackParamList = {
   }
   
   export type Priority = 'Low' | 'Medium' | 'High';
+
+  export interface Post {
+    id: number;
+    title: string;
+    body: string;
+    uniqueId: string;
+  }
   
   

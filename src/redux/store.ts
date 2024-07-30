@@ -3,6 +3,7 @@ import userReducer from './reducers/userReducer';
 import productReducer from './reducers/productReducer';
 import cartReducer from './reducers/cartReducer';
 import searchReducer from './reducers/searchReducer';
+import postReducer from './reducers/postReducer';
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     products: productReducer,
     cart: cartReducer,
     search: searchReducer,
+    posts: postReducer,
   },
 });
 

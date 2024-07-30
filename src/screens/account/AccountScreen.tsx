@@ -3,9 +3,11 @@ import { View, Text, Image, StyleSheet, Button, ActivityIndicator, TouchableOpac
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { fetchUser, logoutUser } from '../../redux/actions/userActions';
+import { useMessage } from '../../context/MessageContext';
 
 const Profile: React.FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useDispatch();
+  const { showMessage } = useMessage(); 
   const user = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
@@ -14,6 +16,7 @@ const Profile: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const handleLogout = () => {
     dispatch(logoutUser() as any);
+    showMessage('Logged out successfully!'); 
     navigation.replace('Login');
   };
 

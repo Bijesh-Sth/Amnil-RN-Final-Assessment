@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { fetchUser, logoutUser } from '../../redux/actions/userActions';
+import { useMessage } from '../../context/MessageContext';
 
 const ProfileComponent: React.FC = (props) => {
   const dispatch = useDispatch();
+  const { showMessage } = useMessage(); 
   const user = useSelector((state: RootState) => state.user);
   const { status } = useSelector((state: RootState) => state.user);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -27,10 +29,10 @@ const ProfileComponent: React.FC = (props) => {
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem('token');
-    await AsyncStorage.removeItem('refreshToken'); // Also remove the refresh token
+    await AsyncStorage.removeItem('refreshToken'); 
     dispatch(logoutUser() as any);
     setIsAuthenticated(false);
-    Alert.alert('Logged out successfully!');
+    showMessage('Logged out successfully!'); 
     props.navigation.replace('Login');
   };
 
