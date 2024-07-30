@@ -1,4 +1,31 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+
+# Amnil Internship Final Assessment Task
+
+This document outlines the final assessment task completed during the Amnil Internship. The project involves the development of a React Native application with several key features aimed at providing a comprehensive user experience. The task demonstrates proficiency in mobile app development, API integration, state management, and user interface design.
+
+## Features
+
+- **Splash Screen**: Designed with minimal animation and logo.
+![Splash Screen](./src/assets/screenshots/Splash.png)
+- **Authentication**: Integrated login functionality with API, token storage using AsyncStorage, and conditional navigation.
+![Login Screen](./src/assets/screenshots/login.png)
+- **API Instance**: Configured for API calls with Redux integration.
+- **Navigators**: Implemented Bottom Tab Navigator and Drawer Navigator with all required screens and functionalities.
+- **Screens**: Developed Home, Search, Cart, Account, Product Detail, Todos, and Post screens with comprehensive features.
+- **Logout**: Added context-based message display and implemented refresh token handling.
+![Logout Screen](./src/assets/screenshots/toast.png)
+
+-**Additional Screenshots**:
+![Home Screen](./src/assets/screenshots/Home.png)
+![Search Screen](./src/assets/screenshots/search.png)
+![Cart Screen](./src/assets/screenshots/cart.png)
+![Todo Screen](./src/assets/screenshots/todo.png)
+![Empty Cart Screen](./src/assets/screenshots/cart1.png)
+![Profile Screen](./src/assets/screenshots/profile.png)
+![Drawer Navigator](./src/assets/screenshots/drawer.png)
+![Call Screen](./src/assets/screenshots/contact.png)
+![Mail Screen](./src/assets/screenshots/email.png)
+
 
 # Getting Started
 
