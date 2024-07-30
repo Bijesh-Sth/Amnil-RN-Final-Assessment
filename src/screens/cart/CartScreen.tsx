@@ -2,8 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, View, FlatList, Button, TouchableOpacity, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/store';
-import { addToCart, updateStock, removeFromCart, updateCartQuantity } from '../../redux/actions/cartActions';
+import { addToCart, updateStock, removeFromCart, updateCartQuantity, clearCart } from '../../redux/actions/cartActions';
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const CartScreen: React.FC = () => {
   const dispatch = useDispatch();
@@ -31,9 +32,13 @@ const CartScreen: React.FC = () => {
     dispatch(removeFromCart({ productId }));
   };
 
+  const handleClearCart = () => {
+    dispatch(clearCart());
+  };
+
   const renderCartItem = ({ item }: { item: any }) => {
     const { product } = item;
-    const imageUrl = product.thumbnail || 'https://via.placeholder.com/80'; 
+    const imageUrl = product.thumbnail || 'https://via.placeholder.com/80';
     const productName = product.title || 'No Name';
 
     return (
@@ -47,8 +52,8 @@ const CartScreen: React.FC = () => {
               <Button title="+" onPress={() => handleIncreaseQuantity(product)} />
               <Text style={styles.quantityText}>{item.quantity}</Text>
               <Button title="-" onPress={() => handleDecreaseQuantity(product)} />
-              <TouchableOpacity onPress={() => handleRemoveItem(product.id)}>
-                <Text style={styles.removeText}>Remove</Text>
+              <TouchableOpacity onPress={() => handleRemoveItem(product.id)} style={styles.removeButton}>
+                <Icon name="trash-can" size={24} color="red" />
               </TouchableOpacity>
             </View>
           </View>
@@ -59,11 +64,24 @@ const CartScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={cartItems}
-        renderItem={renderCartItem}
-        keyExtractor={(item) => item.product.id.toString()}
-      />
+      {cartItems.length === 0 ? (
+        <View style={styles.emptyCart}>
+          <Icon name="cart-off" size={60} color="#888" />
+          <Text style={styles.emptyText}>No items in cart</Text>
+        </View>
+      ) : (
+        <>
+          <FlatList
+            data={cartItems}
+            renderItem={renderCartItem}
+            keyExtractor={(item) => item.product.id.toString()}
+          />
+          <View style={styles.footer}>
+            <Text style={styles.totalText}>Total: ${}</Text>
+            <Button title="Clear Cart" onPress={handleClearCart} />
+          </View>
+        </>
+      )}
     </View>
   );
 };
@@ -86,6 +104,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
+    alignItems: 'center',
   },
   productImage: {
     width: 80,
@@ -114,8 +133,30 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginHorizontal: 8,
   },
-  removeText: {
-    color: 'red',
-    marginLeft: 16,
+  removeButton: {
+    marginLeft: 'auto',
+    padding: 8,
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 16,
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+  },
+  totalText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  emptyCart: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontSize: 18,
+    color: '#888',
+    marginTop: 16,
   },
 });

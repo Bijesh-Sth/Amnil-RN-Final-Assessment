@@ -17,7 +17,11 @@ const initialState: CartState = {
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
-  reducers: {},
+  reducers: {
+    clearCart: (state) => {
+      state.items = [];
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(addToCart, (state, action: PayloadAction<CartItem>) => {
       const existingItem = state.items.find(item => item.product.id === action.payload.product.id);
@@ -44,5 +48,10 @@ const cartSlice = createSlice({
     });
   },
 });
+
+export const { clearCart } = cartSlice.actions;
+
+export const selectCartTotal = (state: { cart: CartState }) => 
+  state.cart.items.reduce((total, item) => total + item.product.price * item.quantity, 0);
 
 export default cartSlice.reducer;
