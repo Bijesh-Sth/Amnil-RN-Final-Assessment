@@ -6,25 +6,29 @@ This document outlines the final assessment task completed during the Amnil Inte
 ## Features
 
 - **Splash Screen**: Designed with minimal animation and logo.
-![Splash Screen](./src/assets/screenshots/Splash.png)
+  <img src="./src/assets/screenshots/Splash.png" alt="Splash Screen" width="200" style="margin: 10px;">
 - **Authentication**: Integrated login functionality with API, token storage using AsyncStorage, and conditional navigation.
-![Login Screen](./src/assets/screenshots/login.png)
+  <img src="./src/assets/screenshots/login.png" alt="Login Screen" width="200" style="margin: 10px;">
 - **API Instance**: Configured for API calls with Redux integration.
 - **Navigators**: Implemented Bottom Tab Navigator and Drawer Navigator with all required screens and functionalities.
 - **Screens**: Developed Home, Search, Cart, Account, Product Detail, Todos, and Post screens with comprehensive features.
 - **Logout**: Added context-based message display and implemented refresh token handling.
-![Logout Screen](./src/assets/screenshots/toast.png)
+  <img src="./src/assets/screenshots/toast.png" alt="Logout Screen" width="200" style="margin: 10px;">
 
--**Additional Screenshots**:
-![Home Screen](./src/assets/screenshots/Home.png)
-![Search Screen](./src/assets/screenshots/search.png)
-![Cart Screen](./src/assets/screenshots/cart.png)
-![Todo Screen](./src/assets/screenshots/todo.png)
-![Empty Cart Screen](./src/assets/screenshots/cart1.png)
-![Profile Screen](./src/assets/screenshots/profile.png)
-![Drawer Navigator](./src/assets/screenshots/drawer.png)
-![Call Screen](./src/assets/screenshots/contact.png)
-![Mail Screen](./src/assets/screenshots/email.png)
+### Additional Screenshots
+
+<div style="display: flex; flex-wrap: wrap;">
+    <img src="./src/assets/screenshots/Home.png" alt="Home Screen" width="200" style="margin: 10px;">
+    <img src="./src/assets/screenshots/search.png" alt="Search Screen" width="200" style="margin: 10px;">
+    <img src="./src/assets/screenshots/cart.png" alt="Cart Screen" width="200" style="margin: 10px;">
+    <img src="./src/assets/screenshots/todo.png" alt="Todo Screen" width="200" style="margin: 10px;">
+    <img src="./src/assets/screenshots/cart1.png" alt="Empty Cart Screen" width="200" style="margin: 10px;">
+    <img src="./src/assets/screenshots/profile.png" alt="Profile Screen" width="200" style="margin: 10px;">
+    <img src="./src/assets/screenshots/drawer.png" alt="Drawer Navigator" width="200" style="margin: 10px;">
+    <img src="./src/assets/screenshots/contact.png" alt="Call Screen" width="200" style="margin: 10px;">
+    <img src="./src/assets/screenshots/email.png" alt="Mail Screen" width="200" style="margin: 10px;">
+</div>
+
 
 
 # Getting Started
