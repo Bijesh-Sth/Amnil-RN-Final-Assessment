@@ -21,10 +21,11 @@ This document outlines the final assessment task completed during the Amnil Inte
     <img src="./src/assets/screenshots/Home.png" alt="Home Screen" width="200" style="margin: 10px;">
     <img src="./src/assets/screenshots/search.png" alt="Search Screen" width="200" style="margin: 10px;">
     <img src="./src/assets/screenshots/cart.png" alt="Cart Screen" width="200" style="margin: 10px;">
-    <img src="./src/assets/screenshots/todo.png" alt="Todo Screen" width="200" style="margin: 10px;">
-    <img src="./src/assets/screenshots/cart1.png" alt="Empty Cart Screen" width="200" style="margin: 10px;">
+    <img src="./src/assets/screenshots/TODO.png" alt="Todo Screen" width="200" style="margin: 10px;">
+    <img src="./src/assets/screenshots/FiltersTODO.png" alt="Todo Screen filter" width="200" style="margin: 10px;">
+    <img src="./src/assets/screenshots/Cart1.png" alt="Empty Cart Screen" width="200" style="margin: 10px;">
     <img src="./src/assets/screenshots/profile.png" alt="Profile Screen" width="200" style="margin: 10px;">
-    <img src="./src/assets/screenshots/drawer.png" alt="Drawer Navigator" width="200" style="margin: 10px;">
+    <img src="./src/assets/screenshots/Drawer.png" alt="Drawer Navigator" width="200" style="margin: 10px;">
     <img src="./src/assets/screenshots/contact.png" alt="Call Screen" width="200" style="margin: 10px;">
     <img src="./src/assets/screenshots/email.png" alt="Mail Screen" width="200" style="margin: 10px;">
 </div>
