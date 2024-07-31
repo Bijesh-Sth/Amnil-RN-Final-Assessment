@@ -202,6 +202,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 10,
     backgroundColor: '#fff',
+    color: '#333', 
   },
   addButton: {
     flexDirection: 'row',
@@ -256,6 +257,7 @@ const styles = StyleSheet.create({
   filterButtonText: {
     marginLeft: 10,
     fontSize: 16,
+    color: '#333', 
   },
   modalContainer: {
     flex: 1,

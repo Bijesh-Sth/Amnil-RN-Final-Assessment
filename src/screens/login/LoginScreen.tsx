@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Alert, StyleSheet, ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
@@ -10,37 +10,51 @@ const Login: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [loginAttempted, setLoginAttempted] = useState<boolean>(false);
 
   const dispatch = useDispatch<AppDispatch>();
   const { status, error } = useSelector((state: RootState) => state.user);
 
   const handleLogin = async () => {
     if (username && password) {
+      setLoginAttempted(true);
       await dispatch(loginUser({ username, password }));
-      if (status === 'succeeded') {
-        navigation.replace('Home');
-      } else {
-        Alert.alert('Error', 'Failed to login');
-      }
     } else {
       Alert.alert('Error', 'Please fill in all fields');
     }
   };
 
+  useEffect(() => {
+    if (loginAttempted) {
+      if (status === 'succeeded') {
+        navigation.replace('Home');
+      } else if (status === 'failed') {
+        Alert.alert('Error', 'Failed to login');
+      }
+    }
+  }, [status, loginAttempted]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to SO.</Text>
       <Text style={styles.orText}>Sign in with your credentials</Text>
-
-      <Input placeholder="Username" value={username} onChangeText={setUsername} />
-
-      <View style={styles.passwordInputContainer}>
+      <View style={styles.inputContainer}>
+        <Input 
+          placeholder="Username" 
+          value={username} 
+          onChangeText={setUsername} 
+          placeholderTextColor="#888888"
+          style={styles.input}
+        />
+      </View>
+      <View style={[styles.inputContainer, styles.passwordInputContainer]}>
         <Input
           placeholder="Password"
           value={password}
           onChangeText={setPassword}
           secureTextEntry={!showPassword}
-          style={{ flex: 1 }}
+          placeholderTextColor="#888888"
+          style={{ flex: 1, ...styles.input }}
         />
         <TouchableOpacity style={styles.toggleButton} onPress={() => setShowPassword(!showPassword)}>
           <Icon name={showPassword ? 'eye-off-outline' : 'eye-outline'} size={24} color="#3498db" />
@@ -55,7 +69,7 @@ const Login: React.FC<{ navigation: any }> = ({ navigation }) => {
         </View>
       )}
 
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      {error && typeof error === 'string' && <Text style={styles.errorText}>{error}</Text>}
 
       <Text style={styles.footerText}>
         Don't have an account?{' '}
@@ -78,11 +92,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 24,
     textAlign: 'center',
+    color: '#3498db',
   },
   orText: {
     textAlign: 'center',
     marginVertical: 10,
-    color: '#6c757d',
+    color: '#333333',
   },
   footerText: {
     textAlign: 'center',
@@ -98,12 +113,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  passwordInputContainer: {
+  inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#ccc',
     marginBottom: 15,
+    paddingLeft: 10,
+  },
+  passwordInputContainer: {
     paddingLeft: 10,
   },
   toggleButton: {
@@ -116,6 +134,9 @@ const styles = StyleSheet.create({
     color: 'red',
     textAlign: 'center',
     marginTop: 10,
+  },
+  input: {
+    color: '#333333', 
   },
 });
 

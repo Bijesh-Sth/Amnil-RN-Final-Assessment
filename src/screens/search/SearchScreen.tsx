@@ -31,6 +31,7 @@ const SearchScreen: React.FC = () => {
       <TextInput
         style={styles.input}
         placeholder="Search for products..."
+        placeholderTextColor="#888"
         value={query}
         onChangeText={setQuery}
       />
@@ -38,8 +39,8 @@ const SearchScreen: React.FC = () => {
 
       {status === 'loading' && <ActivityIndicator size="large" color="#0000ff" style={styles.loader} />}
       {error && <Text style={styles.error}>{error}</Text>}
-      {products.length === 0 && status === 'idle' && <Text>No products available</Text>}
-      {status === 'succeeded' && products.length === 0 && <Text>No products found</Text>}
+      {products.length === 0 && status === 'idle' && <Text style={styles.noProducts}>No products available</Text>}
+      {status === 'succeeded' && products.length === 0 && <Text style={styles.noProducts}>No products found</Text>}
 
       <FlatList
         data={products}
@@ -70,12 +71,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
+    color: '#333',
   },
   loader: {
     marginVertical: 20,
   },
   error: {
     color: 'red',
+    marginVertical: 20,
+    textAlign: 'center',
+  },
+  noProducts: {
+    color: '#333333',
     marginVertical: 20,
     textAlign: 'center',
   },

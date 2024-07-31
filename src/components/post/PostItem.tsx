@@ -12,7 +12,7 @@ interface PostItemProps {
 const PostItem: React.FC<PostItemProps> = ({ post, onEdit, onDelete }) => (
   <View style={styles.container}>
     <Text style={styles.title}>{post.title}</Text>
-    <Text>{post.body}</Text>
+    <Text style={styles.body}>{post.body}</Text>
     <View style={styles.actions}>
       <TouchableOpacity onPress={onEdit} style={styles.actionButton}>
         <Icon name="edit" size={20} color="#007bff" />
@@ -42,6 +42,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: '#333', 
+  },
+  body: {
+    color: '#333', 
   },
   actions: {
     flexDirection: 'row',

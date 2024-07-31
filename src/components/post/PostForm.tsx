@@ -35,12 +35,14 @@ const PostForm: React.FC<PostFormProps> = ({ post, onSave }) => {
         style={styles.input}
         value={title}
         onChangeText={setTitle}
+        placeholderTextColor="#333"
       />
       <Text style={styles.label}>Body</Text>
       <TextInput
         style={styles.input}
         value={body}
         onChangeText={setBody}
+        placeholderTextColor="#333"
       />
       <Button title="Save" onPress={handleSubmit} />
     </View>
@@ -54,6 +56,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     marginBottom: 5,
+    color: '#333',
   },
   input: {
     borderWidth: 1,
@@ -61,6 +64,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginBottom: 15,
+    color: '#333',
   },
 });
 

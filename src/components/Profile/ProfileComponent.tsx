@@ -40,7 +40,7 @@ const ProfileComponent: React.FC = (props) => {
     <DrawerContentScrollView {...props}>
       <TouchableOpacity 
         style={styles.profileContainer} 
-        onPress={() => props.navigation.navigate('Tab', { screen: 'Account' })}
+        onPress={() => props.navigation.navigate('APP', { screen: 'Account' })}
       >
         {status === 'loading' ? (
           <ActivityIndicator size="large" color="#FFA500" />

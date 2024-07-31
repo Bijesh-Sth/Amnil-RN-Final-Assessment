@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
   productName: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: '#333',
   },
   productStock: {
     fontSize: 14,
@@ -132,6 +133,7 @@ const styles = StyleSheet.create({
   quantityText: {
     fontSize: 18,
     marginHorizontal: 8,
+    color: '#333',
   },
   removeButton: {
     marginLeft: 'auto',
@@ -148,6 +150,7 @@ const styles = StyleSheet.create({
   totalText: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: '#333',
   },
   emptyCart: {
     flex: 1,

@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: '100%',
     marginBottom: 20,
+    color: '#333',
   },
 });
 

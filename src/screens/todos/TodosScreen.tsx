@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Modal, TouchableOpacity, Text, FlatList, Pressable, Animated, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {TodoForm, TodoItem} from '../../components';
+import { TodoForm, TodoItem } from '../../components';
 import { Todo } from '../../types';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -142,6 +142,7 @@ const TodosScreen: React.FC = () => {
         <TextInput
           style={styles.searchInput}
           placeholder="Search todos..."
+          placeholderTextColor="#888"
           value={searchText}
           onChangeText={setSearchText}
         />
@@ -212,6 +213,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 10,
     backgroundColor: '#fff',
+    color: '#333',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -269,6 +271,7 @@ const styles = StyleSheet.create({
   filterOptionText: {
     marginLeft: 10,
     fontSize: 16,
+    color: '#333',
   },
   modalContainer: {
     flex: 1,
