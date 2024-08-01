@@ -4,10 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../redux/actions/productActions';
 import { RootState } from '../../redux/store';
 import { BannerComponent, CategoryListComponent, SkeletonLoader } from '../../components';
+import { capitalizeFirstLetter } from '../../services/stringUtil';
 
-const capitalizeFirstLetter = (string: string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
 
 const HomeScreen: React.FC = () => {
   const dispatch = useDispatch();

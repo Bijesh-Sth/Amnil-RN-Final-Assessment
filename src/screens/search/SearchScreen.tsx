@@ -26,6 +26,7 @@ const SearchScreen: React.FC = () => {
   const handleSearch = () => {
     if (query.trim()) {
       dispatch(searchProducts(query));
+      setQuery('');
     }
   };
 

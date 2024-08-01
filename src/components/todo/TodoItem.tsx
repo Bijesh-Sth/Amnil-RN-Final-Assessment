@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   todoText: {
     marginLeft: 10,
     fontSize: 18,
+    color: '#000',
   },
   todoActions: {
     flexDirection: 'row',

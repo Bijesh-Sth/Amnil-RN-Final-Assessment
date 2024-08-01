@@ -5,9 +5,9 @@ import CategoryPicker from './CategoryPicker';
 import { Todo, Priority } from '../../types';
 
 const priorities: Record<Priority, string> = {
-  Low: '#7CFC00',
-  Medium: '#FFA500',
-  High: '#FF4500',
+  Low: '#6AB98E',    
+  Medium: '#6CA6CD', 
+  High: '#FFB347',   
 };
 
 interface TodoFormProps {

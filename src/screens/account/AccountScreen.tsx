@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { fetchUser, logoutUser } from '../../redux/actions/userActions';
 import { useMessage } from '../../context/MessageContext';
+import { capitalizeFirstLetter } from '../../services/stringUtil';
 
 const Profile: React.FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -53,9 +54,11 @@ const Profile: React.FC<{ navigation: any }> = ({ navigation }) => {
         <Text style={styles.label}>Username:</Text>
         <Text style={styles.info}>{user.username}</Text>
         <Text style={styles.label}>Gender:</Text>
-        <Text style={styles.info}>{user.gender}</Text>
+        <Text style={styles.info}>{capitalizeFirstLetter(user.gender)}</Text>
       </View>
-      <Button title="Logout" onPress={handleLogout} />
+      <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+                <Text style={styles.logoutButtonText}>Logout</Text>
+              </TouchableOpacity>
     </View>
   );
 };
@@ -104,6 +107,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#007BFF',
     marginBottom: 15,
+  },
+  logoutButton: {
+    marginTop: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#db4437',
+    borderRadius: 5,
+  },
+  logoutButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
