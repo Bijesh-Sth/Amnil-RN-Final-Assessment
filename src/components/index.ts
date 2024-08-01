@@ -18,3 +18,4 @@ export {default as PostItem} from './post/PostItem';
 export {default as PostForm} from './post/PostForm';
 
 export {default as MessagePopup} from './toast/MessagePopup';
+export {default as CartAlert} from './toast/CartAlert';

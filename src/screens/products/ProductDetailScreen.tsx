@@ -7,7 +7,7 @@ import { RootState } from '../../redux/store';
 import { fetchProduct } from '../../redux/actions/productActions';
 import { addToCart, updateStock } from '../../redux/actions/cartActions';
 import { ProdStackParamList } from '../../types';
-import {ProdSkeletonLoader} from '../../components';
+import { CartAlert, ProdSkeletonLoader } from '../../components';
 import Icon from 'react-native-vector-icons/Ionicons'; 
 
 type ProductDetailScreenRouteProp = RouteProp<ProdStackParamList, 'ProductDetail'>;
@@ -22,13 +22,19 @@ const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ route }) => {
   const navigation = useNavigation();
   const { singleProduct, status, error } = useSelector((state: RootState) => state.products);
   const [quantity, setQuantity] = useState(1);
+  const [alertVisible, setAlertVisible] = useState(false);
 
   useEffect(() => {
     dispatch(fetchProduct(productId));
   }, [dispatch, productId]);
 
+  const handleCloseAlert = () => {
+    setAlertVisible(false);
+  };
+
   const handleAddToCart = () => {
     if (singleProduct) {
+      setAlertVisible(true);
       dispatch(addToCart({ product: singleProduct, quantity }));
       dispatch(updateStock({ productId: singleProduct.id, quantity }));
     }
@@ -76,6 +82,13 @@ const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ route }) => {
 
         <Button title="Add to Cart" onPress={handleAddToCart} />
       </ScrollView>
+      {alertVisible && (
+        <CartAlert
+          visible={alertVisible}
+          message="Item added to cart"
+          onClose={handleCloseAlert}
+        />
+      )}
     </View>
   );
 };

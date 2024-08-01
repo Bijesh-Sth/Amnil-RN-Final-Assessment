@@ -5,10 +5,12 @@ import { RootState } from '../../redux/store';
 import { addToCart, updateStock, removeFromCart, updateCartQuantity, clearCart } from '../../redux/actions/cartActions';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { selectCartTotal } from '../../redux/reducers/cartReducer';
 
 const CartScreen: React.FC = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  const total = useSelector((state: RootState) => selectCartTotal(state));
   const navigation = useNavigation();
 
   const handleIncreaseQuantity = (product: any) => {
@@ -77,7 +79,7 @@ const CartScreen: React.FC = () => {
             keyExtractor={(item) => item.product.id.toString()}
           />
           <View style={styles.footer}>
-            <Text style={styles.totalText}>Total: ${}</Text>
+            <Text style={styles.totalText}>Total: ${total.toFixed(2)}</Text>
             <Button title="Clear Cart" onPress={handleClearCart} />
           </View>
         </>

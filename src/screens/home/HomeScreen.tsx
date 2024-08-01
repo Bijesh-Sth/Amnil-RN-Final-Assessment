@@ -5,6 +5,10 @@ import { fetchProducts } from '../../redux/actions/productActions';
 import { RootState } from '../../redux/store';
 import { BannerComponent, CategoryListComponent, SkeletonLoader } from '../../components';
 
+const capitalizeFirstLetter = (string: string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
 const HomeScreen: React.FC = () => {
   const dispatch = useDispatch();
   const { products, status } = useSelector((state: RootState) => state.products);
@@ -13,7 +17,7 @@ const HomeScreen: React.FC = () => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  const categories = Array.from(new Set(products.map((product: any) => product.category)));
+  const categories = Array.from(new Set(products.map((product: any) => capitalizeFirstLetter(product.category))));
 
   return (
     <FlatList
@@ -27,7 +31,7 @@ const HomeScreen: React.FC = () => {
             ))}
           </View>
         ) : (
-          <CategoryListComponent category={item} products={products.filter((product: any) => product.category === item)} />
+          <CategoryListComponent category={item} products={products.filter((product: any) => capitalizeFirstLetter(product.category) === item)} />
         )
       }
       keyExtractor={(item, index) => index.toString()}

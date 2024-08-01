@@ -54,7 +54,7 @@ const Login: React.FC<{ navigation: any }> = ({ navigation }) => {
           onChangeText={setPassword}
           secureTextEntry={!showPassword}
           placeholderTextColor="#888888"
-          style={{ flex: 1, ...styles.input }}
+          style={{ ...styles.input }}
         />
         <TouchableOpacity style={styles.toggleButton} onPress={() => setShowPassword(!showPassword)}>
           <Icon name={showPassword ? 'eye-off-outline' : 'eye-outline'} size={24} color="#3498db" />
@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     marginBottom: 15,
     paddingLeft: 10,
+    width: '100%',
   },
   passwordInputContainer: {
     paddingLeft: 10,
@@ -137,6 +138,7 @@ const styles = StyleSheet.create({
   },
   input: {
     color: '#333333', 
+    flex: 1,
   },
 });
 

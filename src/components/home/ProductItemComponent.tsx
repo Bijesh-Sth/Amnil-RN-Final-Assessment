@@ -1,30 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, Button, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { addToCart } from '../../redux/actions/cartActions';
 import { ProdStackParamList } from '../../types';
+import {CartAlert} from '../../components';
 
 type ProductItemComponentProps = {
   item: any;
 };
 
-type ProductDetailScreenNavigationProp = StackNavigationProp<
-  ProdStackParamList,
-  'ProductDetail'
->;
+type ProductDetailScreenNavigationProp = StackNavigationProp<ProdStackParamList, 'ProductDetail'>;
 
 const ProductItemComponent: React.FC<ProductItemComponentProps> = ({ item }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation<ProductDetailScreenNavigationProp>();
+  const [alertVisible, setAlertVisible] = useState(false);
 
   const handleAddToCart = (product: any) => {
     dispatch(addToCart({ product, quantity: 1 }));
+    setAlertVisible(true);
   };
 
   const handleNavigateToDetail = () => {
     navigation.navigate('ProductDetail', { productId: item.id });
+  };
+
+  const handleCloseAlert = () => {
+    setAlertVisible(false);
   };
 
   return (
@@ -35,6 +39,11 @@ const ProductItemComponent: React.FC<ProductItemComponentProps> = ({ item }) => 
       />
       <Text style={styles.productName}>{item.name}</Text>
       <Button title="Add to Cart" onPress={() => handleAddToCart(item)} />
+      <CartAlert
+        visible={alertVisible}
+        message="Item added to cart"
+        onClose={handleCloseAlert}
+      />
     </TouchableOpacity>
   );
 };

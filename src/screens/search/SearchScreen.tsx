@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, FlatList, Image, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../redux/store';
 import { searchProducts } from '../../redux/actions/searchAction';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ProdStackParamList } from '../../types';
+import { clearSearchResults } from '../../redux/reducers/searchReducer';
 
 type SearchScreenNavigationProp = StackNavigationProp<ProdStackParamList, 'Search'>;
 
@@ -15,6 +16,12 @@ const SearchScreen: React.FC = () => {
   const { products, status, error } = useSelector((state: RootState) => state.search);
 
   const [query, setQuery] = useState<string>('');
+
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(clearSearchResults());
+    }, [dispatch])
+  );
 
   const handleSearch = () => {
     if (query.trim()) {
@@ -89,7 +96,7 @@ const styles = StyleSheet.create({
   productContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 15,
+    marginTop: 15,
     padding: 10,
     borderWidth: 1,
     borderColor: '#ddd',
@@ -107,11 +114,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     flex: 1,
+    color: '#333',
   },
   price: {
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'right',
+    color: '#333',
   },
 });
 
