@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Modal, TouchableOpacity, Text, FlatList, Pressable, Animated, TextInput, RefreshControl, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Modal, TouchableOpacity, Text, FlatList, TextInput, RefreshControl, ActivityIndicator, Animated } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../redux/store';
 import { fetchPosts } from '../../redux/actions/postActions';
@@ -46,8 +46,8 @@ const PostsScreen: React.FC = () => {
 
   const handleRefresh = () => {
     setRefreshing(true);
-    dispatch(removeAllPosts()); // Clear the posts for refresh
-    dispatch(setPage(1)); // Reset to page 1 for refresh
+    dispatch(removeAllPosts()); 
+    dispatch(setPage(1)); 
     dispatch(fetchPosts(1)).finally(() => setRefreshing(false));
   };
 
@@ -110,6 +110,7 @@ const PostsScreen: React.FC = () => {
               {renderFooter()}
             </View>
           }
+          contentContainerStyle={filterActive ? styles.listWithFilter : null}
         />
       )}
       <Animated.View
@@ -120,28 +121,29 @@ const PostsScreen: React.FC = () => {
               {
                 translateY: filterAnim.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [300, 0], 
+                  outputRange: [-300, 0], 
                 }),
               },
             ],
           },
         ]}
       >
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search Posts..."
+          placeholderTextColor="#888"
+          value={searchText}
+          onChangeText={(text) => setSearchText(text)}
+        />
+      </Animated.View>
+      <View style={styles.bottomContainer}>
         <TouchableOpacity
           style={styles.filterButton}
           onPress={() => setFilterActive(!filterActive)}
         >
           <Icon name="filter" size={20} color="#000" />
-          <Text style={styles.filterButtonText}>{filterActive ? 'Show All' : 'Filter'}</Text>
+          <Text style={styles.filterButtonText}>{filterActive ? 'Hide Filter' : 'Show Filter'}</Text>
         </TouchableOpacity>
-      </Animated.View>
-      <View style={styles.bottomContainer}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search Posts..."
-          value={searchText}
-          onChangeText={(text) => setSearchText(text)}
-        />
         <TouchableOpacity
           style={styles.addButton}
           onPress={() => {
@@ -161,12 +163,7 @@ const PostsScreen: React.FC = () => {
               onSave={handleSavePost}
               onCancel={() => setIsFormVisible(false)}
             />
-            <TouchableOpacity
-              onPress={() => setIsFormVisible(false)}
-              style={styles.cancelButton}
-            >
-              <Text style={styles.cancelButtonText}>Cancel</Text>
-            </TouchableOpacity>
+            
           </View>
         </View>
       </Modal>
@@ -189,6 +186,8 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   bottomContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     padding: 10,
     borderTopWidth: 1,
     borderTopColor: '#ddd',
@@ -211,86 +210,80 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     justifyContent: 'center',
-    marginTop: 10,
   },
   buttonText: {
     color: '#fff',
-    marginLeft: 10,
-  },
-  footerContainer: {
-    paddingVertical: 20,
-    borderTopWidth: 1,
-    borderColor: '#CED0CE',
-    alignItems: 'center',
-  },
-  getMoreButton: {
-    backgroundColor: '#007bff',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-  },
-  getMoreButtonText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-  filterDropdown: {
-    position: 'absolute',
-    bottom: 120,
-    left: 20,
-    right: 20,
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    shadowColor: '#000',
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 5,
-    elevation: 3,
-    maxHeight: 200,
-  },
-  filterButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  filterButtonText: {
-    marginLeft: 10,
-    fontSize: 16,
-    color: '#333', 
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    width: '90%',
-    padding: 20,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-  },
-  cancelButton: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: '#FF0000',
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  cancelButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  footer: {
-    padding: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginLeft: 5,
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    padding: 20,
+  },
+  modalContent: {
+    width: '100%',
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  cancelButton: {
+    marginTop: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
+  cancelButtonText: {
+    color: '#007bff',
+    fontSize: 16,
+  },
+  filterButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#007bff',
+    borderRadius: 5,
+    justifyContent: 'center',
+  },
+  filterButtonText: {
+    color: '#fff',
+    marginLeft: 5,
+  },
+  footerContainer: {
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  getMoreButton: {
+    padding: 10,
+    backgroundColor: '#007bff',
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  getMoreButtonText: {
+    color: '#fff',
+  },
+  footer: {
+    paddingVertical: 20,
+    borderTopWidth: 1,
+    borderColor: '#CED0CE',
+  },
+  filterDropdown: {
+    position: 'absolute',
+    width: '100%',
+    top: 0,
+    padding: 20,
+    backgroundColor: '#f9f9f9',
+    borderTopWidth: 1,
+    borderTopColor: '#ddd',
+  },
+  listWithFilter: {
+    marginTop: 100, 
   },
 });
 
